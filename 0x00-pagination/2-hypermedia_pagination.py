@@ -4,6 +4,8 @@
 """
 from typing import List, Tuple
 import csv
+import math
+
 
 def index_range(page, page_size) -> Tuple:
     """
@@ -54,23 +56,17 @@ class Server:
         """
             Hypermedia pagination
         """
+        start, end = index_range(page, page_size)
+        data = self.get_page(page, page_size)
+        total_rows = len(self.dataset())
+        total_pages = math.ceil(total_rows / page_size)
+
         result = {
-            'page_size': page_size,
+            'page_size': page_size if page_size * page < total_rows else 0,
             'page': page,
-            'data': self.get_page(page, page_size),
-            'next_page': page + 1 if page + 1 <= 3000 else None,
+            'data': data,
+            'next_page': page + 1 if total_rows >= page_size * page else None,
             'prev_page': page - 1 if not (page - 1 <= 0) else None,
-            'total_pages': len(self.dataset())
+            'total_pages': total_pages
         }
         return result
-
-
-server = Server()
-
-print(server.get_hyper(1, 2))
-print("---")
-print(server.get_hyper(2, 2))
-print("---")
-print(server.get_hyper(100, 3))
-print("---")
-print(server.get_hyper(3000, 100))
