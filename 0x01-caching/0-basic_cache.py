@@ -14,6 +14,7 @@ class BasicCache(BaseCaching):
             Initialization
         """
         super().__init__()
+
     def put(self, key, item):
         """
             Must assign to the dictionary self.cache_data the
