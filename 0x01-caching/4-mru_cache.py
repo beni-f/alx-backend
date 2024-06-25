@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-    LRU Caching
+    MRU Caching
 """
 from base_caching import BaseCaching
 
 
-class LRUCache(BaseCaching):
+class MRUCache(BaseCaching):
     """
-        LRU Caching
+        MRU Caching
     """
     def __init__(self):
         """
@@ -18,7 +18,7 @@ class LRUCache(BaseCaching):
 
     def put(self, key, item):
         """
-            Add cache data using the LRU algorithm
+            Add cache data using the MRU algorithm
         """
         if key is None or item is None:
             return
@@ -28,8 +28,8 @@ class LRUCache(BaseCaching):
             key not in self.cache_data
         ):
             if self.stack and len(self.stack) > 1:
-                discard_key = self.stack[0]
-                self.stack.pop(0)
+                discard_key = self.stack[-1]
+                self.stack.pop(-1)
             else:
                 for k, v in self.cache_data.items():
                     discard_key = k
@@ -41,7 +41,6 @@ class LRUCache(BaseCaching):
             self.stack.pop(self.stack.index(key))
         self.cache_data[key] = item
         self.stack.append(key)
-        print(self.stack)
 
     def get(self, key):
         """
