@@ -7,6 +7,9 @@ from base_caching import BaseCaching
 
 class FIFOCache(BaseCaching):
     def __init__(self):
+        """
+            Initialization
+        """
         super().__init__()
 
     def put(self, key, item):
