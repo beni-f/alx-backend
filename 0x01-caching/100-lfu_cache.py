@@ -32,7 +32,6 @@ class LFUCache(BaseCaching):
                 min = v
                 discard_key = k
                 break
-            print(min)
             for k, v in self.obj.items():
                 if v < min:
                     min = v
