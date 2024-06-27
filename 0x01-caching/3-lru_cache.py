@@ -41,7 +41,6 @@ class LRUCache(BaseCaching):
             self.stack.pop(self.stack.index(key))
         self.cache_data[key] = item
         self.stack.append(key)
-        print(self.stack)
 
     def get(self, key):
         """
