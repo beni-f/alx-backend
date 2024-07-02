@@ -27,6 +27,9 @@ def get_locale():
     """
         Returns the best choice of language
     """
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
@@ -35,4 +38,4 @@ def index():
     """
         Simple route
     """
-    return render_template('2-index.html')
+    return render_template('4-index.html')
