@@ -39,4 +39,3 @@ def index():
         Simple route
     """
     return render_template('4-index.html')
-
