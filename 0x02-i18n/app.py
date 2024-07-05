@@ -2,6 +2,7 @@
 """
 Get locale from request
 """
+from datetime import datetime
 from flask_babel import Babel, _
 from flask import Flask, request, render_template, g
 import pytz
@@ -43,14 +44,6 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/')
-def index():
-    """
-        Simple route
-    """
-    return render_template('7-index.html')
-
-
 def get_user():
     """
         Returns a user dictionary or None if
@@ -87,3 +80,19 @@ def get_timezone():
         except UnknownTimeZoneError:
             pass
     return app.config['BABEL_DEFAULT_TIMEZONE']
+
+
+@app.route('/')
+def index():
+    """
+        Simple route
+    """
+    timezone = get_timezone()
+    tz = pytz.timezone(timezone)
+    current_time = datetime.now(tz)
+    formatted_time = current_time.strftime('%b %d, %Y, %H:%M:%S %p') if get_locale() == "en" else current_time.strftime('%d %b %Y à %H:%M:%S')
+    return render_template('index.html', current_time=formatted_time)
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)
