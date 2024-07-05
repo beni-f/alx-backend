@@ -4,6 +4,8 @@ Get locale from request
 """
 from flask_babel import Babel, _
 from flask import Flask, request, render_template, g
+import pytz
+from pytz.exceptions import UnknownTimeZoneError
 
 
 users = {
@@ -67,3 +69,21 @@ def before_request():
         Before Request
     """
     g.user = get_user()
+
+
+@babel.timezoneselector
+def get_timezone():
+    timezone = request.args.get('timezone')
+    if(timezone):
+        try:
+            pytz.timezone(timezone)
+            return timezone
+        except UnknownTimeZoneError:
+            pass
+    if g.user and g.user.get('timezone'):
+        try:
+            pytz.timezone(g.user.get('timezone'))
+            return g.user.get('timezone')
+        except UnknownTimeZoneError:
+            pass
+    return app.config['BABEL_DEFAULT_TIMEZONE']
