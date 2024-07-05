@@ -74,7 +74,7 @@ def before_request():
 @babel.timezoneselector
 def get_timezone():
     timezone = request.args.get('timezone')
-    if(timezone):
+    if (timezone):
         try:
             pytz.timezone(timezone)
             return timezone
